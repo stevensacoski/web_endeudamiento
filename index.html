@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Endeudarse para comer — Relevamiento CISUR sobre endeudamiento en barrios populares</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --petrol:#355868; --petrol-deep:#22404b; --petrol-darker:#18313a;
+  --magenta:#F73484; --magenta-deep:#CE0063;
+  --teal:#378396; --teal-soft:#B9E4E3;
+  --yellow:#F2DA00;
+  --ink:#20343c; --muted:#5d7178;
+  --paper:#ffffff; --paper-2:#F4F7F8; --line:#e2eaec;
+  --on-dark:#eaf4f4; --on-dark-muted:#a9c4c8;
+  --measure:64ch;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --petrol:#3d6474; --petrol-deep:#1a333c; --petrol-darker:#122932;
+    --ink:#e7f1f2; --muted:#9db4ba;
+    --paper:#132a32; --paper-2:#0f242b; --line:#25444d;
+  }
+}
+:root[data-theme="dark"]{
+  --petrol:#3d6474; --petrol-deep:#1a333c; --petrol-darker:#122932;
+  --ink:#e7f1f2; --muted:#9db4ba;
+  --paper:#132a32; --paper-2:#0f242b; --line:#25444d;
+}
+*{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Open Sans",system-ui,sans-serif; font-size:18px; line-height:1.7;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+h1,h2,h3,.num,.eyebrow-n{font-family:"Montserrat",system-ui,sans-serif}
+p{margin:0 0 1.1em}
+a{color:var(--teal)}
+img{max-width:100%}
+
+/* ---------- shared layout ---------- */
+.wrap{max-width:var(--measure); margin:0 auto; padding:0 24px}
+.section{padding:clamp(56px,9vw,120px) 0}
+.reading{background:var(--paper)}
+.reading h2{
+  font-size:clamp(1.7rem,4.4vw,2.9rem); line-height:1.12; font-weight:800;
+  letter-spacing:-.01em; margin:0 0 .55em; color:var(--petrol);
+}
+:root[data-theme="dark"] .reading h2,
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .reading h2{color:var(--on-dark)}}
+.reading h2 .idx{color:var(--magenta); font-weight:700}
+.lede{font-size:clamp(1.05rem,2.4vw,1.28rem); color:var(--muted)}
+.reading p{max-width:60ch}
+.reading p b, .reading p strong{color:var(--magenta-deep); font-weight:700}
+:root[data-theme="dark"] .reading p b{color:var(--magenta)}
+
+/* ---------- hero ---------- */
+.hero{
+  background:radial-gradient(120% 120% at 80% 0%,var(--petrol) 0%,var(--petrol-deep) 55%,var(--petrol-darker) 100%);
+  color:var(--on-dark); min-height:100svh; display:flex; flex-direction:column;
+  justify-content:space-between; position:relative; overflow:hidden;
+}
+.hero .wrap{padding-top:clamp(40px,10vh,90px); padding-bottom:40px}
+.kicker{
+  font-family:"Montserrat"; font-weight:600; font-size:.82rem; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--teal-soft); margin-bottom:22px;
+  display:flex; align-items:center; gap:12px;
+}
+.kicker::before{content:""; width:34px; height:2px; background:var(--magenta); display:inline-block}
+.hero h1{
+  font-weight:800; font-size:clamp(2.9rem,9vw,6.2rem); line-height:.98;
+  letter-spacing:-.02em; margin:0 0 .35em; max-width:14ch;
+}
+.hero h1 em{font-style:normal; color:var(--magenta)}
+.hero .sub{font-size:clamp(1.05rem,2.6vw,1.4rem); max-width:46ch; color:var(--on-dark); opacity:.92}
+.hero-grid{
+  display:grid; grid-template-columns:1.15fr .85fr; gap:48px; align-items:center;
+}
+@media(max-width:760px){.hero-grid{grid-template-columns:1fr; gap:36px}}
+
+/* the 4-of-5 houses figure */
+.houses-fig{display:flex; flex-direction:column; gap:18px}
+.houses{display:flex; gap:clamp(6px,2vw,16px); align-items:flex-end}
+.house{flex:1; max-width:76px}
+.house svg{width:100%; height:auto; display:block}
+.house .body{fill:none; stroke:var(--teal-soft); stroke-width:5; opacity:.5}
+.house .roof{fill:none; stroke:var(--teal-soft); stroke-width:5; opacity:.5}
+.house.on .body{fill:var(--magenta); stroke:var(--magenta); opacity:1}
+.house.on .roof{fill:var(--magenta); stroke:var(--magenta); opacity:1}
+.house.on .door{fill:var(--petrol-deep)}
+.houses-cap{display:flex; align-items:baseline; gap:14px}
+.houses-cap .big{font-family:"Montserrat"; font-weight:800; font-size:clamp(2.4rem,7vw,3.6rem); color:#fff; line-height:1}
+.houses-cap .txt{font-size:1rem; color:var(--on-dark); max-width:20ch}
+.houses-cap .txt b{color:var(--magenta); font-weight:700}
+
+.hero-meta{
+  display:flex; flex-wrap:wrap; gap:0; border-top:1px solid rgba(255,255,255,.16);
+  padding-top:20px; margin-top:4px;
+}
+.hero-meta div{padding-right:30px; margin-right:30px; border-right:1px solid rgba(255,255,255,.14)}
+.hero-meta div:last-child{border-right:0;margin-right:0;padding-right:0}
+.hero-meta .mv{font-family:"Montserrat"; font-weight:700; font-size:1.5rem; color:#fff}
+.hero-meta .ml{font-size:.82rem; color:var(--on-dark-muted); letter-spacing:.02em}
+.scrollcue{font-size:.8rem; color:var(--on-dark-muted); letter-spacing:.1em; text-transform:uppercase; font-family:"Montserrat"; font-weight:600}
+
+/* ---------- thesis band ---------- */
+.thesis{background:var(--magenta); color:#fff}
+.thesis .wrap{max-width:22ch}
+.thesis p{
+  font-family:"Montserrat"; font-weight:700; font-size:clamp(1.7rem,5.6vw,3.3rem);
+  line-height:1.1; letter-spacing:-.01em; max-width:none; margin:0;
+}
+.thesis .after{
+  font-family:"Open Sans"; font-weight:400; font-size:clamp(1.02rem,2.4vw,1.2rem);
+  line-height:1.6; margin-top:1.1em; max-width:52ch; opacity:.95;
+}
+
+/* ---------- stat grid ---------- */
+.stats{background:var(--petrol-deep); color:var(--on-dark)}
+.stats h2{color:#fff; font-size:clamp(1.5rem,4vw,2.3rem); font-weight:800; margin:0 0 .1em}
+.stats .sh-sub{color:var(--on-dark-muted); margin-bottom:40px}
+.stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.12)}
+@media(max-width:900px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.stat-grid{grid-template-columns:1fr}}
+.stat{background:var(--petrol-deep); padding:26px 22px; min-height:150px; display:flex; flex-direction:column; justify-content:flex-start}
+.stat .num{font-weight:800; font-size:clamp(2.3rem,5.5vw,3.1rem); line-height:1; color:#fff; letter-spacing:-.02em}
+.stat.crit .num{color:var(--magenta)}
+.stat.warn .num{color:var(--yellow)}
+.stat .lab{font-size:.95rem; color:var(--on-dark); margin-top:12px; line-height:1.4}
+
+/* ---------- data blocks in reading sections ---------- */
+.figure{margin:38px 0; padding:28px; background:var(--paper-2); border-radius:14px; border:1px solid var(--line)}
+.figure .ftitle{font-family:"Montserrat"; font-weight:700; font-size:1.12rem; color:var(--ink); margin:0 0 4px}
+.figure .fsub{font-size:.86rem; color:var(--muted); margin:0 0 22px}
+.figure.wide{max-width:none}
+
+/* donut + legend */
+.donut-row{display:flex; gap:30px; align-items:center; flex-wrap:wrap}
+.donut-row svg{flex:0 0 auto}
+.legend{display:flex; flex-direction:column; gap:10px; font-size:.95rem}
+.legend .li{display:flex; align-items:center; gap:10px}
+.legend .sw{width:14px; height:14px; border-radius:3px; flex:0 0 auto}
+.legend .lv{font-family:"Montserrat"; font-weight:700; margin-left:auto; padding-left:18px}
+
+/* bars */
+.bars{display:flex; flex-direction:column; gap:13px}
+.bar{display:grid; grid-template-columns:minmax(120px,38%) 1fr auto; align-items:center; gap:14px}
+.bar .blab{font-size:.92rem; color:var(--ink)}
+.bar .btrack{height:20px; background:var(--line); border-radius:6px; overflow:hidden}
+.bar .bfill{height:100%; width:0; background:var(--teal); border-radius:6px; transition:width 1.1s cubic-bezier(.16,1,.3,1)}
+.bar.top .bfill{background:var(--magenta)}
+.bar .bval{font-family:"Montserrat"; font-weight:700; font-size:.95rem; min-width:44px; text-align:right}
+@media(max-width:560px){.bar{grid-template-columns:1fr auto; }.bar .btrack{grid-column:1/-1; order:3}}
+
+/* pull number inline */
+.pull{
+  display:flex; gap:22px; align-items:baseline; margin:34px 0; padding:22px 26px;
+  border-left:5px solid var(--magenta); background:var(--paper-2); border-radius:0 12px 12px 0;
+}
+.pull .pn{font-family:"Montserrat"; font-weight:800; font-size:clamp(2.4rem,7vw,3.4rem); color:var(--magenta); line-height:.9}
+.pull .pt{font-size:1rem; color:var(--ink); align-self:center}
+
+/* ---------- interactive: comparador ---------- */
+.compare{background:var(--petrol); color:var(--on-dark)}
+.compare h2{color:#fff; font-size:clamp(1.7rem,4.4vw,2.7rem); font-weight:800; margin:0 0 .3em}
+.compare .lede{color:var(--teal-soft)}
+.cmp-tabs{display:flex; flex-wrap:wrap; gap:10px; margin:32px 0 8px}
+.cmp-tab{
+  font-family:"Montserrat"; font-weight:600; font-size:.92rem; color:var(--on-dark);
+  background:transparent; border:1.5px solid rgba(255,255,255,.28); border-radius:999px;
+  padding:9px 16px; cursor:pointer; transition:.18s;
+}
+.cmp-tab:hover{border-color:var(--teal-soft)}
+.cmp-tab[aria-selected="true"]{background:var(--magenta); border-color:var(--magenta); color:#fff}
+.cmp-tab:focus-visible{outline:3px solid var(--yellow); outline-offset:2px}
+.cmp-stage{margin-top:26px; background:var(--petrol-deep); border-radius:16px; padding:clamp(24px,4vw,40px)}
+.cmp-q{font-size:1.05rem; color:var(--on-dark); margin:0 0 28px; max-width:48ch}
+.cmp-pair{display:flex; flex-direction:column; gap:22px}
+.cmp-item .cmp-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:8px}
+.cmp-item .cmp-name{font-family:"Montserrat"; font-weight:600; font-size:1rem}
+.cmp-item .cmp-num{font-family:"Montserrat"; font-weight:800; font-size:clamp(1.6rem,4.5vw,2.2rem); line-height:1}
+.cmp-track{height:34px; background:rgba(255,255,255,.1); border-radius:8px; overflow:hidden}
+.cmp-fill{height:100%; width:0; border-radius:8px; transition:width 1s cubic-bezier(.16,1,.3,1)}
+.cmp-item.country .cmp-fill{background:var(--teal)}
+.cmp-item.country .cmp-num{color:var(--teal-soft)}
+.cmp-item.bp .cmp-fill{background:var(--magenta)}
+.cmp-item.bp .cmp-num{color:var(--magenta)}
+.cmp-gap{
+  margin-top:26px; padding-top:22px; border-top:1px solid rgba(255,255,255,.14);
+  font-size:1rem; color:var(--on-dark);
+}
+.cmp-gap b{font-family:"Montserrat"; font-weight:700; color:var(--yellow)}
+.cmp-src{font-size:.8rem; color:var(--on-dark-muted); margin-top:14px}
+
+/* ---------- interactive: simulador ---------- */
+.sim{background:var(--paper-2)}
+.sim h2{color:var(--petrol); font-weight:800; font-size:clamp(1.7rem,4.4vw,2.7rem); margin:0 0 .3em}
+:root[data-theme="dark"] .sim h2{color:var(--on-dark)}
+.sim-card{margin-top:30px; background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:clamp(24px,4vw,38px); display:grid; grid-template-columns:1fr 1fr; gap:40px}
+@media(max-width:720px){.sim-card{grid-template-columns:1fr; gap:30px}}
+.sim-controls label{display:block; font-family:"Montserrat"; font-weight:600; font-size:.9rem; color:var(--muted); margin:0 0 6px}
+.sim-controls .ctl{margin-bottom:26px}
+.sim-controls .val{font-family:"Montserrat"; font-weight:800; font-size:1.5rem; color:var(--petrol); margin-bottom:8px}
+:root[data-theme="dark"] .sim-controls .val{color:var(--on-dark)}
+input[type=range]{width:100%; accent-color:var(--magenta); height:26px}
+.sim-out{display:flex; flex-direction:column; justify-content:center; background:var(--petrol-deep); border-radius:14px; padding:30px; color:var(--on-dark)}
+.sim-out .oline{font-size:.95rem; color:var(--on-dark-muted); margin-bottom:6px}
+.sim-out .obig{font-family:"Montserrat"; font-weight:800; font-size:clamp(2.6rem,8vw,4rem); line-height:1; color:#fff}
+.sim-out .obig .u{font-size:.4em; font-weight:600; color:var(--on-dark-muted); margin-left:6px}
+.sim-out .ohint{margin-top:18px; font-size:.95rem; line-height:1.5}
+.sim-out .ohint b{color:var(--magenta); font-family:"Montserrat"; font-weight:700}
+.sim-note{font-size:.82rem; color:var(--muted); margin-top:20px; max-width:60ch}
+
+/* ---------- conclusions ---------- */
+.concl{background:var(--petrol-darker); color:var(--on-dark)}
+.concl h2{color:#fff; font-weight:800; font-size:clamp(1.7rem,4.6vw,2.8rem); margin:0 0 .5em}
+.concl .lede{color:var(--teal-soft); max-width:56ch; margin-bottom:14px}
+.imp-list{list-style:none; padding:0; margin:36px 0 0; counter-reset:imp}
+.imp-list li{
+  counter-increment:imp; position:relative; padding:22px 0 22px 62px;
+  border-top:1px solid rgba(255,255,255,.14);
+}
+.imp-list li::before{
+  content:counter(imp,decimal-leading-zero); position:absolute; left:0; top:22px;
+  font-family:"Montserrat"; font-weight:800; font-size:1.4rem; color:var(--magenta);
+}
+.imp-list h3{font-family:"Montserrat"; font-weight:700; font-size:1.18rem; color:#fff; margin:0 0 6px}
+.imp-list p{font-size:.98rem; color:var(--on-dark); margin:0; max-width:58ch}
+.closing{
+  margin-top:48px; font-family:"Montserrat"; font-weight:700;
+  font-size:clamp(1.3rem,3.6vw,2rem); line-height:1.25; color:#fff; max-width:24ch;
+}
+.closing em{font-style:normal; color:var(--magenta)}
+
+/* ---------- footer / ficha ---------- */
+footer{background:var(--paper); color:var(--ink); padding:64px 0 80px; border-top:1px solid var(--line)}
+footer .cols{display:grid; grid-template-columns:1.3fr 1fr; gap:40px}
+@media(max-width:680px){footer .cols{grid-template-columns:1fr; gap:28px}}
+footer h4{font-family:"Montserrat"; font-weight:700; font-size:.82rem; letter-spacing:.1em; text-transform:uppercase; color:var(--teal); margin:0 0 14px}
+footer p, footer li{font-size:.9rem; color:var(--muted); line-height:1.6}
+footer ul{margin:0; padding-left:18px}
+.brand{font-family:"Montserrat"; font-weight:800; font-size:1.4rem; color:var(--petrol); margin-bottom:6px}
+:root[data-theme="dark"] .brand{color:var(--on-dark)}
+.caveat{font-size:.82rem; color:var(--muted); border-left:3px solid var(--yellow); padding:4px 0 4px 16px; margin-top:18px}
+
+/* theme toggle */
+.tt{position:fixed; top:calc(env(safe-area-inset-top,0px) + 12px); right:12px; z-index:50;
+  width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,.3);
+  background:rgba(20,40,48,.55); color:#fff; cursor:pointer; font-size:1rem; backdrop-filter:blur(6px)}
+.tt:focus-visible{outline:3px solid var(--yellow)}
+
+.reveal{opacity:0; transform:translateY(16px)}
+.reveal.in{opacity:1; transform:none; transition:opacity .7s ease,transform .7s cubic-bezier(.16,1,.3,1)}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important; animation:none!important}
+  .reveal{opacity:1; transform:none}
+  .bfill,.cmp-fill{transition:none!important}
+}
+</style>
+</head>
+<body>
+<button class="tt" id="tt" aria-label="Cambiar tema claro/oscuro">◐</button>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Relevamiento nacional CISUR · Septiembre 2026</div>
+    <div class="hero-grid">
+      <div>
+        <h1>Endeudarse <em>para comer</em></h1>
+        <p class="sub">En los barrios populares de la Argentina, la deuda no es un lujo: es la forma en que los hogares gestionan la pobreza.</p>
+      </div>
+      <div class="houses-fig" id="heroFig">
+        <div class="houses" id="houses" aria-hidden="true"></div>
+        <div class="houses-cap">
+          <div class="big" id="heroPct">78%</div>
+          <div class="txt"><b>4 de cada 5 hogares</b> de barrios populares está endeudado</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="hero-meta">
+      <div><div class="mv" data-count="428">428</div><div class="ml">hogares encuestados</div></div>
+      <div><div class="mv" data-count="119">119</div><div class="ml">barrios del RENABAP</div></div>
+      <div><div class="mv" data-count="15">15</div><div class="ml">provincias</div></div>
+      <div style="display:flex;align-items:flex-end"><div class="scrollcue">↓ Deslizá para leer</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= THESIS ================= -->
+<section class="thesis section">
+  <div class="wrap">
+    <p>El endeudamiento no es un fenómeno de consumo, sino de subsistencia.</p>
+    <p class="after">Las familias se endeudan para comer, pagar servicios y tapar otras deudas, en un contexto donde los ingresos no alcanzan a cubrir la canasta básica.</p>
+  </div>
+</section>
+
+<!-- ================= STATS ================= -->
+<section class="stats section" id="statsSec">
+  <div class="wrap">
+    <h2>Las cifras del relevamiento</h2>
+    <p class="sh-sub">Todos los porcentajes describen a los 428 hogares encuestados.</p>
+    <div class="stat-grid">
+      <div class="stat crit"><div class="num" data-count="90" data-suffix="%">90%</div><div class="lab">de los hogares endeudados está sobreendeudado</div></div>
+      <div class="stat crit"><div class="num" data-count="30" data-suffix="%">30%</div><div class="lab">de los endeudados está en mora (90+ días); otro 22% atrasado</div></div>
+      <div class="stat"><div class="num" data-count="2.8" data-dec="1">2,8</div><div class="lab">acreedores en promedio por hogar endeudado</div></div>
+      <div class="stat crit"><div class="num" data-count="45" data-suffix="%">45%</div><div class="lab">de las deudas se tomó para comprar alimentos</div></div>
+      <div class="stat warn"><div class="num" data-count="83" data-suffix="%">83%</div><div class="lab">de los hogares atraviesa inseguridad alimentaria</div></div>
+      <div class="stat"><div class="num" data-prefix="$" data-count="2.3" data-dec="1" data-suffix="M">$2,3M</div><div class="lab">deuda promedio por hogar endeudado</div></div>
+      <div class="stat"><div class="num" data-prefix="$" data-count="1" data-suffix="M">$1M</div><div class="lab">ingreso mediano por hogar (~62% del promedio país)</div></div>
+      <div class="stat warn"><div class="num" data-count="82" data-suffix="%">82%</div><div class="lab">considera que su economía empeoró en el último año</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 1. Endeudados ================= -->
+<section class="section reading">
+  <div class="wrap">
+    <h2><span class="idx">01.</span> Cuatro de cada cinco hogares, endeudados</h2>
+    <p>En los barrios relevados, el <b>78% de los hogares está endeudado</b>. Y sobre esa población, el peso de las deudas se vuelve estructural: <b>9 de cada 10 hogares endeudados está sobreendeudado</b> —comprometen una parte alta de su ingreso o se ven forzados a restringir consumos básicos, sobre todo la comida.</p>
+    <div class="pull">
+      <div class="pn">74%</div>
+      <div class="pt">de las deudas se tomó para gastos corrientes: alimentación, salud, servicios, transporte, alquiler.</div>
+    </div>
+    <p>La deuda promedio por hogar endeudado asciende a <b>$2,3 millones</b>: frente a los ingresos con los que cuentan estas familias, es un monto difícil de afrontar incluso resignando gastos básicos.</p>
+    <div class="figure" id="fig-estado">
+      <div class="ftitle">Estado de la deuda</div>
+      <div class="fsub">Entre hogares endeudados · mora y atraso son categorías excluyentes</div>
+      <div class="donut-row">
+        <div id="donut-estado"></div>
+        <div class="legend" id="leg-estado"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 2. Trabajar mucho ================= -->
+<section class="section reading">
+  <div class="wrap">
+    <h2><span class="idx">02.</span> Trabajar mucho, ganar poco</h2>
+    <p>El endeudamiento se monta sobre economías familiares con fuerte presencia del trabajo, pero con ingresos insuficientes y alta informalidad. El principal aportante tiene en promedio <b>1,4 trabajos</b> y dedica <b>9,1 horas por día</b>, <b>5,3 días</b> por semana. Aun así, solo el <b>15% tiene empleo registrado</b>.</p>
+    <div class="figure">
+      <div class="ftitle">¿De dónde viene el ingreso del hogar?</div>
+      <div class="fsub">Composición del ingreso total mensual familiar</div>
+      <div class="donut-row">
+        <div id="donut-ingreso"></div>
+        <div class="legend" id="leg-ingreso"></div>
+      </div>
+    </div>
+    <p>Del lado del gasto, ante la pregunta por los tres principales egresos del hogar, la <b>alimentación</b> aparece primera y lejos: es a la vez el principal motivo de endeudamiento y el principal gasto familiar.</p>
+    <div class="figure">
+      <div class="ftitle">Los tres principales gastos del hogar</div>
+      <div class="fsub">Los hogares podían marcar hasta 3 opciones — por eso no suman 100%</div>
+      <div class="bars" id="bars-gastos"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3. Quién presta ================= -->
+<section class="section reading">
+  <div class="wrap">
+    <h2><span class="idx">03.</span> ¿Quién presta en el barrio?</h2>
+    <p>Con <b>2,8 acreedores</b> en promedio por hogar endeudado, el financiamiento es una trama de fuentes superpuestas. La más extendida son las <b>apps o fintech</b>; enseguida aparecen dos circuitos informales sin ninguna regulación —el prestamista del barrio y el fiado en comercios— por encima del préstamo bancario.</p>
+    <div class="figure">
+      <div class="ftitle">Espectro de acreedores</div>
+      <div class="fsub">% de hogares endeudados que tiene cada tipo de deuda — se puede tener más de una</div>
+      <div class="bars" id="bars-acreedores"></div>
+    </div>
+    <p>Las principales fuentes de crédito de estos hogares recaen en <b>billeteras virtuales y en redes informales sin regulación</b>: exactamente donde las tasas y las prácticas de cobranza quedan fuera de todo control.</p>
+  </div>
+</section>
+
+<!-- ================= 4. Pagar cada vez más difícil ================= -->
+<section class="section reading">
+  <div class="wrap">
+    <h2><span class="idx">04.</span> Pagar, cada vez más difícil</h2>
+    <p>Menos de la mitad de los hogares endeudados (48%) está estrictamente al día. El <b>30% ya está en mora</b> —90 días o más de atraso— y otro 22% arrastra atrasos menores. La presión sobre el presupuesto es directa:</p>
+    <div class="pull">
+      <div class="pn">43%</div>
+      <div class="pt">de los hogares endeudados destina más de la mitad de su ingreso total al pago de deudas.</div>
+    </div>
+    <p>El endeudamiento, además, es reciente y en ascenso: el <b>42% empezó a endeudarse en el último año</b> y el <b>82% percibe que su economía empeoró</b> en ese mismo período.</p>
+  </div>
+</section>
+
+<!-- ================= SIMULADOR ================= -->
+<section class="section sim" id="simSec">
+  <div class="wrap">
+    <h2>El hogar típico, en números</h2>
+    <p class="lede" style="color:var(--muted);max-width:56ch">Con el ingreso y la deuda medianos del relevamiento, ¿cuánto tardaría un hogar en cancelar lo que debe? Movés cuánto de su ingreso puede destinar a pagar y lo ves.</p>
+    <div class="sim-card">
+      <div class="sim-controls">
+        <div class="ctl">
+          <label for="s-ing">Ingreso mensual del hogar</label>
+          <div class="val" id="v-ing">$1.000.000</div>
+          <input type="range" id="s-ing" min="400000" max="2000000" step="50000" value="1000000">
+        </div>
+        <div class="ctl">
+          <label for="s-deu">Deuda total del hogar</label>
+          <div class="val" id="v-deu">$2.300.000</div>
+          <input type="range" id="s-deu" min="500000" max="6000000" step="100000" value="2300000">
+        </div>
+        <div class="ctl">
+          <label for="s-pct">Parte del ingreso que puede pagar</label>
+          <div class="val" id="v-pct">25%</div>
+          <input type="range" id="s-pct" min="5" max="60" step="5" value="25">
+        </div>
+      </div>
+      <div class="sim-out">
+        <div class="oline">Tardaría en saldar la deuda</div>
+        <div class="obig"><span id="o-meses">9,2</span><span class="u" id="o-u">meses</span></div>
+        <div class="ohint" id="o-hint"></div>
+      </div>
+    </div>
+    <p class="sim-note">Cálculo ilustrativo: deuda ÷ (parte del ingreso × ingreso mensual), <b>sin intereses</b>. Es un piso optimista — el crédito de estos hogares, sobre todo el de apps y prestamistas, se toma a tasas muy altas, así que el tiempo real es bastante mayor.</p>
+  </div>
+</section>
+
+<!-- ================= 5-6. Recortar / comer ================= -->
+<section class="section reading">
+  <div class="wrap">
+    <h2><span class="idx">05.</span> Recortar para pagar, comer menos para saldar</h2>
+    <p>Pagar la deuda no es solo una obligación financiera: compite con la comida. Entre los hogares endeudados, lo primero que se recorta para poder pagar es la <b>alimentación (51%)</b>, seguida de indumentaria y recreación. Y el peso no es solo económico:</p>
+    <div class="figure">
+      <div class="ftitle">¿Cuánto afectan las deudas la vida diaria?</div>
+      <div class="fsub">Ámbitos afectados según los hogares endeudados — 87% dice que le afecta «bastante», «mucho» o «muchísimo»</div>
+      <div class="bars" id="bars-impacto"></div>
+    </div>
+    <p>Acá aparece el circuito más crítico del informe. El <b>83% de los hogares atraviesa inseguridad alimentaria</b>. Y la comida funciona en las dos puntas: es el motivo para endeudarse y la variable de ajuste cuando hay que pagar.</p>
+    <div class="pull">
+      <div class="pn">59%</div>
+      <div class="pt">de quienes tomaron deuda para comprar comida tuvo, tiempo después, que reducir su gasto en alimentos para pagar esa misma deuda.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= COMPARADOR ================= -->
+<section class="section compare" id="cmpSec">
+  <div class="wrap">
+    <h2>Una deuda distinta</h2>
+    <p class="lede">Una misma deuda no pesa igual en todos lados. Comparados con el promedio nacional, los hogares de barrios populares deben más, están más atrasados y ganan menos. Elegí un indicador:</p>
+    <div class="cmp-tabs" id="cmpTabs" role="tablist"></div>
+    <div class="cmp-stage">
+      <p class="cmp-q" id="cmpQ"></p>
+      <div class="cmp-pair">
+        <div class="cmp-item country">
+          <div class="cmp-head"><span class="cmp-name">Promedio país</span><span class="cmp-num" id="cmpCountryNum"></span></div>
+          <div class="cmp-track"><div class="cmp-fill" id="cmpCountryFill"></div></div>
+        </div>
+        <div class="cmp-item bp">
+          <div class="cmp-head"><span class="cmp-name">Barrios populares</span><span class="cmp-num" id="cmpBpNum"></span></div>
+          <div class="cmp-track"><div class="cmp-fill" id="cmpBpFill"></div></div>
+        </div>
+      </div>
+      <div class="cmp-gap" id="cmpGap"></div>
+      <div class="cmp-src" id="cmpSrc"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONCLUSIONES ================= -->
+<section class="section concl">
+  <div class="wrap">
+    <h2>Qué hacer con esto</h2>
+    <p class="lede">El endeudamiento en los barrios populares es masivo (78% de los hogares), crónico (el 58% debe hace más de un año) y de subsistencia. Cualquier política de alivio tiene que partir de ese diagnóstico.</p>
+    <ul class="imp-list">
+      <li>
+        <h3>Es crédito de subsistencia, no de consumo</h3>
+        <p>Se financia comida, servicios y refinanciación de deuda previa. Reestructurar cuotas no ataca la causa mientras los ingresos sigan por debajo de la Canasta Básica Total.</p>
+      </li>
+      <li>
+        <h3>Las fintech y el circuito informal son los principales acreedores</h3>
+        <p>Casi la mitad de los hogares combina fuentes formales e informales, y la app de crédito es el acreedor más frecuente. Hace falta regular tasas y prácticas del crédito no bancario.</p>
+      </li>
+      <li>
+        <h3>El trabajo precario es la norma</h3>
+        <p>Tres cuartos de los trabajos declarados son informales o independientes y el 56% de los aportantes está sobreocupado, pero con ingresos muy por debajo de la línea de pobreza.</p>
+      </li>
+      <li>
+        <h3>La deuda es un problema alimentario y de salud pública</h3>
+        <p>El 83% de los hogares está en inseguridad alimentaria: redujo comidas y/o asiste a comedores o recibe viandas.</p>
+      </li>
+    </ul>
+    <p class="closing">No hay integración socio-urbana posible sin resolver la <em>trampa de deuda</em> que hoy atraviesa a la mayoría de los hogares de los barrios populares.</p>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="wrap">
+    <div class="brand">CISUR</div>
+    <p style="color:var(--muted);margin-bottom:34px">Centro para la Integración Socio Urbana</p>
+    <div class="cols">
+      <div>
+        <h4>Ficha técnica</h4>
+        <ul>
+          <li>Relevamiento nacional sobre endeudamiento, morosidad y sobrecarga financiera de hogares de barrios populares.</li>
+          <li>Población: hogares de barrios populares inscriptos en el RENABAP; personas de 18 años o más.</li>
+          <li>Técnica: entrevista presencial con formulario digital.</li>
+          <li>Trabajo de campo: 7 al 27 de septiembre de 2026.</li>
+          <li>Muestra: 428 hogares · 119 barrios · 15 provincias.</li>
+        </ul>
+        <div class="caveat">Estudio exploratorio-descriptivo con muestreo no probabilístico. Los resultados describen exclusivamente a los hogares encuestados y no son proyectables al universo de barrios populares.</div>
+      </div>
+      <div>
+        <h4>Definiciones</h4>
+        <ul>
+          <li><b>Endeudado</b>: al menos una deuda o pago pendiente vigente.</li>
+          <li><b>Atrasado</b>: deuda con 31 a 90 días de atraso (Situación 2, BCRA).</li>
+          <li><b>En mora</b>: 90+ días de atraso (Situaciones 3-4-5, BCRA). Mora y atraso son excluyentes.</li>
+          <li><b>Sobreendeudado</b>: con deuda vigente y, al menos, uno de estos: destina 25%+ del ingreso a pagar deudas, redujo comidas en el último año, o recortó alimentación para pagar.</li>
+        </ul>
+        <h4 style="margin-top:26px">Fuentes de comparación</h4>
+        <ul>
+          <li>Deuda de hogares: Zentrix, ago-2026 · Mora: Mapa de la Deuda / BCRA.</li>
+          <li>Empleo, jornada e ingresos: INDEC-EPH, 1º y 2º trimestre 2026.</li>
+          <li>Canasta básica: INDEC, ago-2026 · RENABAP: Fundar, 2025.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+const RM = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ---------- theme toggle ---------- */
+const tt = document.getElementById('tt');
+tt.addEventListener('click',()=>{
+  const cur = document.documentElement.getAttribute('data-theme');
+  const sysDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  let next;
+  if(cur) next = cur==='dark'?'light':'dark';
+  else next = sysDark?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('cisur-theme',next);}catch(e){}
+});
+try{const t=localStorage.getItem('cisur-theme'); if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}
+
+/* ---------- hero houses ---------- */
+const houseSVG = `<svg viewBox="0 0 60 64" xmlns="http://www.w3.org/2000/svg">
+<path class="roof" d="M6 28 L30 8 L54 28" stroke-linejoin="round" stroke-linecap="round"/>
+<rect class="body" x="11" y="28" width="38" height="30" rx="2"/>
+<rect class="door" x="25" y="40" width="10" height="18"/></svg>`;
+const housesEl = document.getElementById('houses');
+for(let i=0;i<5;i++){
+  const d=document.createElement('div'); d.className='house'+(i<4?' on':''); d.innerHTML=houseSVG;
+  if(!RM){d.style.opacity='0'; d.style.transform='translateY(10px)';}
+  housesEl.appendChild(d);
+}
+if(!RM){
+  window.addEventListener('load',()=>{
+    [...housesEl.children].forEach((h,i)=>{
+      setTimeout(()=>{h.style.transition='opacity .5s ease,transform .5s cubic-bezier(.16,1,.3,1)'; h.style.opacity=''; h.style.transform='';}, 240+i*130);
+    });
+  });
+}
+
+/* ---------- number formatting ---------- */
+const nf = new Intl.NumberFormat('es-AR');
+function fmtMoney(v){return '$'+nf.format(Math.round(v));}
+function esNum(v,dec){return dec?v.toFixed(dec).replace('.',','):nf.format(Math.round(v));}
+
+/* ---------- count-up ---------- */
+function countUp(el){
+  const target=parseFloat(el.dataset.count);
+  const dec=parseInt(el.dataset.dec||'0',10);
+  const pre=el.dataset.prefix||'', suf=el.dataset.suffix||'';
+  if(RM){el.textContent=pre+esNum(target,dec)+suf; return;}
+  const dur=1100, t0=performance.now();
+  function step(t){
+    let p=Math.min(1,(t-t0)/dur); p=1-Math.pow(1-p,3);
+    el.textContent=pre+esNum(target*p,dec)+suf;
+    if(p<1)requestAnimationFrame(step); else el.textContent=pre+esNum(target,dec)+suf;
+  }
+  requestAnimationFrame(step);
+}
+
+/* ---------- donut builder ---------- */
+function polar(cx,cy,r,a){const rad=(a-90)*Math.PI/180;return[cx+r*Math.cos(rad),cy+r*Math.sin(rad)];}
+function arc(cx,cy,r,a0,a1){
+  const[x0,y0]=polar(cx,cy,r,a0),[x1,y1]=polar(cx,cy,r,a1);
+  const large=(a1-a0)>180?1:0;
+  return`M ${x0} ${y0} A ${r} ${r} 0 ${large} 1 ${x1} ${y1}`;
+}
+function drawDonut(mountId,legId,data){
+  const size=190,cx=95,cy=95,r=72,sw=26;
+  let a=0; const total=data.reduce((s,d)=>s+d.v,0);
+  let paths='';
+  data.forEach(d=>{
+    const sweep=d.v/total*360, a1=a+sweep;
+    // gap between segments
+    paths+=`<path d="${arc(cx,cy,r,a+1.2,a1-1.2)}" stroke="${d.c}" stroke-width="${sw}" fill="none" stroke-linecap="round" class="seg" style="${RM?'':'stroke-dasharray:1000;stroke-dashoffset:1000'}"/>`;
+    a=a1;
+  });
+  document.getElementById(mountId).innerHTML=
+    `<svg viewBox="0 0 ${size} ${size}" width="190" height="190" role="img">${paths}</svg>`;
+  const leg=document.getElementById(legId);
+  leg.innerHTML=data.map(d=>
+    `<div class="li"><span class="sw" style="background:${d.c}"></span><span>${d.n}</span><span class="lv" style="color:${d.c}">${d.lv||d.v+'%'}</span></div>`
+  ).join('');
+}
+
+/* ---------- bars builder ---------- */
+function drawBars(mountId,data){
+  const max=Math.max(...data.map(d=>d.v));
+  const top=Math.max(...data.map(d=>d.v));
+  document.getElementById(mountId).innerHTML=data.map(d=>
+    `<div class="bar${d.v===top?' top':''}">
+       <div class="blab">${d.n}</div>
+       <div class="btrack"><div class="bfill" data-w="${d.v/max*100}"></div></div>
+       <div class="bval">${esNum(d.v, d.dec||0)}%</div>
+     </div>`).join('');
+}
+
+/* ---------- DATA ---------- */
+const D_ESTADO=[
+  {n:'Al día',v:48,c:'#378396'},
+  {n:'Atrasado (31-90 días)',v:22,c:'#F2DA00'},
+  {n:'En mora (90+ días)',v:30,c:'#F73484'}
+];
+const D_INGRESO=[
+  {n:'Trabajo / empleo',v:73,c:'#F73484'},
+  {n:'Programas sociales',v:19,c:'#378396'},
+  {n:'Jubilaciones y pensiones',v:7,c:'#355868'},
+  {n:'Otras fuentes',v:1,c:'#F2DA00'}
+];
+const B_GASTOS=[
+  {n:'Alimentos',v:96},{n:'Servicios',v:53},{n:'Pago de deudas',v:36},
+  {n:'Salud',v:21},{n:'Transporte',v:14},{n:'Educación',v:12},{n:'Indumentaria',v:8}
+];
+const B_ACRE=[
+  {n:'App o fintech',v:46},{n:'Prestamista del barrio',v:36},{n:'Fiado en comercios',v:33},
+  {n:'Préstamo bancario',v:33},{n:'Familiares o conocidos',v:30},{n:'Servicios vencidos',v:28}
+];
+const B_IMPACTO=[
+  {n:'Ánimo / emocional',v:67},{n:'Sueño / descanso',v:52},{n:'Salud física',v:42}
+];
+
+drawDonut('donut-estado','leg-estado',D_ESTADO);
+drawDonut('donut-ingreso','leg-ingreso',D_INGRESO);
+drawBars('bars-gastos',B_GASTOS);
+drawBars('bars-acreedores',B_ACRE);
+drawBars('bars-impacto',B_IMPACTO);
+
+/* ---------- COMPARADOR ---------- */
+const CMP=[
+  {k:'deuda',tab:'Hogares con deuda',q:'¿Qué proporción de los hogares tiene deudas?',
+   country:60,bp:78,unit:'%',src:'País: Zentrix, ago-2026. Barrios populares: relevamiento CISUR.',
+   gap:h=>`En los barrios relevados hay <b>18 puntos más</b> de hogares endeudados que en el promedio nacional.`},
+  {k:'mora',tab:'En mora',q:'¿Qué proporción está en mora (90+ días)?',
+   country:26.4,bp:30,unit:'%',src:'País: Mapa de la Deuda (BCRA). Barrios populares: CISUR (sobre hogares endeudados).',
+   gap:h=>`La mora en barrios populares supera al promedio país, ya de por sí en máximos históricos.`},
+  {k:'empleo',tab:'Empleo registrado',q:'¿Qué proporción del principal aportante tiene empleo formal?',
+   country:54.9,bp:15,unit:'%',src:'País: INDEC-EPH 2º trim. 2026. Barrios populares: CISUR.',
+   gap:h=>`Una brecha de <b>40 puntos</b>: apenas 1 de cada 7 aportantes tiene empleo registrado.`},
+  {k:'sobreocup',tab:'Sobreocupación',q:'¿Qué proporción trabaja más de 45 horas semanales?',
+   country:27,bp:56.4,unit:'%',src:'País: INDEC-EPH 2º trim. 2026. Barrios populares: CISUR.',
+   gap:h=>`Se trabaja <b>mucho más</b>: la sobreocupación duplica al promedio nacional.`},
+  {k:'ing_pc',tab:'Ingreso por persona',q:'¿Cuál es el ingreso mediano por persona?',
+   country:500000,bp:250000,unit:'$',src:'País: INDEC-EPH 1º trim. 2026. Barrios populares: CISUR.',
+   gap:h=>`El ingreso por persona en los barrios es <b>la mitad</b> del promedio nacional.`},
+  {k:'ing_hog',tab:'Ingreso por hogar',q:'¿Cuál es el ingreso mediano por hogar?',
+   country:1600000,bp:1000000,unit:'$',src:'País: INDEC-EPH 1º trim. 2026. Barrios populares: CISUR.',
+   gap:h=>`El ingreso por hogar equivale a apenas el <b>62%</b> del promedio país.`}
+];
+const cmpTabs=document.getElementById('cmpTabs');
+CMP.forEach((c,i)=>{
+  const b=document.createElement('button');
+  b.className='cmp-tab'; b.textContent=c.tab; b.setAttribute('role','tab');
+  b.setAttribute('aria-selected', i===0?'true':'false');
+  b.addEventListener('click',()=>selCmp(i));
+  cmpTabs.appendChild(b);
+});
+function fmtCmp(v,unit){return unit==='$'?fmtMoney(v):esNum(v, v%1?1:0)+'%';}
+let cmpDone=false;
+function selCmp(i){
+  const c=CMP[i];
+  [...cmpTabs.children].forEach((b,j)=>b.setAttribute('aria-selected', j===i?'true':'false'));
+  document.getElementById('cmpQ').textContent=c.q;
+  document.getElementById('cmpCountryNum').textContent=fmtCmp(c.country,c.unit);
+  document.getElementById('cmpBpNum').textContent=fmtCmp(c.bp,c.unit);
+  const max=Math.max(c.country,c.bp);
+  const cf=document.getElementById('cmpCountryFill'), bf=document.getElementById('cmpBpFill');
+  cf.style.width='0'; bf.style.width='0';
+  requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+    cf.style.width=(c.country/max*100)+'%'; bf.style.width=(c.bp/max*100)+'%';
+  });});
+  document.getElementById('cmpGap').innerHTML=c.gap();
+  document.getElementById('cmpSrc').textContent=c.src;
+}
+
+/* ---------- SIMULADOR ---------- */
+const sIng=document.getElementById('s-ing'), sDeu=document.getElementById('s-deu'), sPct=document.getElementById('s-pct');
+function simUpdate(){
+  const ing=+sIng.value, deu=+sDeu.value, pct=+sPct.value/100;
+  document.getElementById('v-ing').textContent=fmtMoney(ing);
+  document.getElementById('v-deu').textContent=fmtMoney(deu);
+  document.getElementById('v-pct').textContent=(pct*100)+'%';
+  const cuota=ing*pct;
+  const meses=deu/cuota;
+  const oMeses=document.getElementById('o-meses'), oU=document.getElementById('o-u');
+  if(meses>=24){oMeses.textContent=esNum(meses/12,1); oU.textContent='años';}
+  else{oMeses.textContent=esNum(meses,1); oU.textContent='meses';}
+  const ratio=deu/ing;
+  document.getElementById('o-hint').innerHTML=
+    `Con <b>${fmtMoney(cuota)}</b> por mes destinados a la deuda. La deuda equivale a <b>${esNum(ratio,1)} ingresos</b> mensuales del hogar.`;
+}
+[sIng,sDeu,sPct].forEach(s=>s.addEventListener('input',simUpdate));
+simUpdate();
+
+/* ---------- reveal + trigger animations on view ---------- */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    const el=e.target;
+    if(el.classList.contains('num')||el.classList.contains('mv')){countUp(el); io.unobserve(el); return;}
+    if(el.dataset.bars!==undefined){
+      el.querySelectorAll('.bfill').forEach(f=>f.style.width=f.dataset.w+'%'); io.unobserve(el); return;
+    }
+    if(el.id==='fig-estado'||el.dataset.donut!==undefined){
+      el.querySelectorAll('.seg').forEach(s=>{s.style.transition='stroke-dashoffset 1.1s cubic-bezier(.16,1,.3,1)'; s.style.strokeDashoffset='0';});
+      io.unobserve(el); return;
+    }
+    if(el.id==='cmpSec' && !cmpDone){cmpDone=true; selCmp(0); io.unobserve(el); return;}
+  });
+},{threshold:.35});
+
+document.querySelectorAll('[data-count]').forEach(el=>io.observe(el));
+document.querySelectorAll('.mv').forEach(el=>io.observe(el));
+document.querySelectorAll('.bars').forEach(el=>{el.dataset.bars=''; io.observe(el);});
+document.querySelectorAll('.donut-row').forEach(el=>{const p=el.parentElement; p.dataset.donut=''; io.observe(p);});
+io.observe(document.getElementById('cmpSec'));
+
+// fallback: if comparador not yet triggered by scroll on load
+setTimeout(()=>{if(!cmpDone){cmpDone=true; selCmp(0);}},1500);
+</script>
+</body>
+</html>
